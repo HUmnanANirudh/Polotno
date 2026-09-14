@@ -10,28 +10,23 @@ import { errorHandler } from './middleware/error-handler.ts';
 
 const app = express();
 
-// Global middleware
 app.use(cors({ origin: env.CORS_ORIGIN, credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Health check
 app.get('/api/health', (_req, res) => {
   res.json({ success: true, message: 'API is running' });
 });
 
-// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/canvases', canvasRoutes);
 app.use('/api/upload', uploadRoutes);
 
-// Error handler (must be last)
 app.use(errorHandler);
 
-// Start server
 app.listen(env.PORT, () => {
-  console.log(`🚀 Server running on port ${env.PORT}`);
+  console.log(`Server running on port ${env.PORT}`);
 });
 
 export default app;
