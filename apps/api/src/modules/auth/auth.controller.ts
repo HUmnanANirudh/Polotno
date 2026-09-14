@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import * as authService from './auth.service.ts';
 
 export async function register(req: Request, res: Response) {
-  const input = req.body; // Extract params here
+  const input = req.body;
   const { user, accessToken, refreshToken } = await authService.register(input);
   
   res.cookie('refreshToken', refreshToken, {
@@ -20,7 +20,7 @@ export async function register(req: Request, res: Response) {
 }
 
 export async function login(req: Request, res: Response) {
-  const input = req.body; // Extract params here
+  const input = req.body;
   const { user, accessToken, refreshToken } = await authService.login(input);
   
   res.cookie('refreshToken', refreshToken, {
@@ -61,7 +61,7 @@ export async function logout(req: Request, res: Response) {
 }
 
 export async function me(req: Request, res: Response) {
-  const userId = req.user!.userId; // Extract params here
+  const userId = req.user!.userId;
   const user = await authService.getProfile(userId);
   res.status(200).json({
     success: true,

@@ -1,0 +1,53 @@
+{
+  "title": "Choose the visual world (Bolder Options)",
+  "question": "You asked for bolder options. Choose from these highly committed, unconventional directions.",
+  "options": [
+    {
+      "id": "crt-oscilloscope",
+      "label": "The CRT Oscilloscope",
+      "thesis": "The canvas as a signal bench, where every action leaves a glowing trace over an etched grid.",
+      "palette": [
+        "#050505",
+        "#113311",
+        "#33ff33",
+        "#ff9900"
+      ],
+      "materials": [
+        "phosphor glow",
+        "etched glass grid"
+      ],
+      "viewport": "Deep black glass ground, blazing green phosphor tools, glowing amber readouts for states.",
+      "risk": "Requires absolute commitment to the aesthetic; half-measures look like a cheap terminal theme.",
+      "comp": ".impeccable/mocks/decision/crt-oscilloscope.webp",
+      "hero": "https://impeccable.style/worlds/cards/scientific-notation-oscilloscope-signal-bench-hero.webp"
+    },
+    {
+      "id": "ascii-render",
+      "label": "The ASCII Terminal",
+      "thesis": "The editor rendered entirely in a monospace grid where glyph density represents layout.",
+      "palette": [
+        "#000000",
+        "#ffffff"
+      ],
+      "materials": [
+        "monospace type",
+        "character density"
+      ],
+      "viewport": "Stark black and white grid where all tools and UI elements are built from typography.",
+      "risk": "Extremely polarizing and potentially hard to use for traditional graphical design tasks.",
+      "comp": ".impeccable/mocks/decision/ascii-render.webp",
+      "hero": "https://impeccable.style/worlds/cards/medium-native-ascii-live-scene-render-hero.webp"
+    }
+  ],
+  "reroll": {
+    "registers": [
+      "safer",
+      "bolder"
+    ]
+  },
+  "buildPath": {
+    "value": "code",
+    "toggle": false
+  },
+  "steer": true
+}
