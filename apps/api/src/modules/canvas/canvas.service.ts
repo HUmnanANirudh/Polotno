@@ -1,36 +1,17 @@
 import type { CreateCanvasInput, UpdateCanvasInput } from '@polotno/types';
-import { prisma } from '../../config/prisma.ts';
+import * as canvasRepository from './canvas.repository.ts';
 import { AppError } from '../../lib/app-error.ts';
 
 export async function create(userId: string, input: CreateCanvasInput) {
-  return prisma.canvas.create({
-    data: {
-      ...input,
-      userId,
-    },
-  });
+  return canvasRepository.create(userId, input);
 }
 
 export async function findAll(userId: string) {
-  return prisma.canvas.findMany({
-    where: { userId },
-    select: {
-      id: true,
-      name: true,
-      width: true,
-      height: true,
-      thumbnail: true,
-      createdAt: true,
-      updatedAt: true,
-    },
-    orderBy: { updatedAt: 'desc' },
-  });
+  return canvasRepository.findAllByUser(userId);
 }
 
 export async function findById(userId: string, canvasId: string) {
-  const canvas = await prisma.canvas.findFirst({
-    where: { id: canvasId, userId },
-  });
+  const canvas = await canvasRepository.findByIdAndUser(canvasId, userId);
 
   if (!canvas) {
     throw new AppError(404, 'Canvas not found');
@@ -40,18 +21,19 @@ export async function findById(userId: string, canvasId: string) {
 }
 
 export async function update(userId: string, canvasId: string, input: UpdateCanvasInput) {
-  await findById(userId, canvasId);
+  const canvas = await canvasRepository.updateByIdAndUser(canvasId, userId, input);
 
-  return prisma.canvas.update({
-    where: { id: canvasId },
-    data: input,
-  });
+  if (!canvas) {
+    throw new AppError(404, 'Canvas not found');
+  }
+
+  return canvas;
 }
 
 export async function remove(userId: string, canvasId: string) {
-  await findById(userId, canvasId);
+  const success = await canvasRepository.deleteByIdAndUser(canvasId, userId);
 
-  await prisma.canvas.delete({
-    where: { id: canvasId },
-  });
+  if (!success) {
+    throw new AppError(404, 'Canvas not found');
+  }
 }

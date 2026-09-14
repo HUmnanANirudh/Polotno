@@ -2,7 +2,9 @@ import type { Request, Response } from 'express';
 import * as canvasService from './canvas.service.ts';
 
 export async function create(req: Request, res: Response) {
-  const canvas = await canvasService.create(req.user!.userId, req.body);
+  const userId = req.user!.userId;
+  const input = req.body;
+  const canvas = await canvasService.create(userId, input);
   res.status(201).json({
     success: true,
     data: canvas,
@@ -10,7 +12,8 @@ export async function create(req: Request, res: Response) {
 }
 
 export async function findAll(req: Request, res: Response) {
-  const canvases = await canvasService.findAll(req.user!.userId);
+  const userId = req.user!.userId;
+  const canvases = await canvasService.findAll(userId);
   res.status(200).json({
     success: true,
     data: canvases,
@@ -18,7 +21,9 @@ export async function findAll(req: Request, res: Response) {
 }
 
 export async function findById(req: Request, res: Response) {
-  const canvas = await canvasService.findById(req.user!.userId, req.params.id);
+  const userId = req.user!.userId;
+  const canvasId = req.params.id;
+  const canvas = await canvasService.findById(userId, canvasId);
   res.status(200).json({
     success: true,
     data: canvas,
@@ -26,7 +31,10 @@ export async function findById(req: Request, res: Response) {
 }
 
 export async function update(req: Request, res: Response) {
-  const canvas = await canvasService.update(req.user!.userId, req.params.id, req.body);
+  const userId = req.user!.userId;
+  const canvasId = req.params.id;
+  const input = req.body;
+  const canvas = await canvasService.update(userId, canvasId, input);
   res.status(200).json({
     success: true,
     data: canvas,
@@ -34,6 +42,8 @@ export async function update(req: Request, res: Response) {
 }
 
 export async function remove(req: Request, res: Response) {
-  await canvasService.remove(req.user!.userId, req.params.id);
+  const userId = req.user!.userId;
+  const canvasId = req.params.id;
+  await canvasService.remove(userId, canvasId);
   res.status(204).send();
 }

@@ -2,7 +2,8 @@ import type { Request, Response } from 'express';
 import * as authService from './auth.service.ts';
 
 export async function register(req: Request, res: Response) {
-  const { user, accessToken, refreshToken } = await authService.register(req.body);
+  const input = req.body; // Extract params here
+  const { user, accessToken, refreshToken } = await authService.register(input);
   
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
@@ -19,7 +20,8 @@ export async function register(req: Request, res: Response) {
 }
 
 export async function login(req: Request, res: Response) {
-  const { user, accessToken, refreshToken } = await authService.login(req.body);
+  const input = req.body; // Extract params here
+  const { user, accessToken, refreshToken } = await authService.login(input);
   
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
@@ -36,7 +38,7 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function refresh(req: Request, res: Response) {
-  const refreshToken = req.cookies.refreshToken;
+  const refreshToken = req.cookies.refreshToken; // Extract from cookies
   if (!refreshToken) {
     res.status(401).json({ success: false, message: 'No refresh token provided' });
     return;
@@ -59,7 +61,8 @@ export async function logout(req: Request, res: Response) {
 }
 
 export async function me(req: Request, res: Response) {
-  const user = await authService.getProfile(req.user!.userId);
+  const userId = req.user!.userId; // Extract params here
+  const user = await authService.getProfile(userId);
   res.status(200).json({
     success: true,
     data: user,
