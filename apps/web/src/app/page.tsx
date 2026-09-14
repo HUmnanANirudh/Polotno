@@ -1,4 +1,5 @@
 import CanvasEditor from '../components/canvas/CanvasEditor';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -14,6 +15,13 @@ export default function Home() {
           <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors shadow-sm">
             Save Canvas
           </button>
+          <div className="w-px h-6 bg-gray-200 mx-2"></div>
+          <Link href="/login" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+            Log in
+          </Link>
+          <Link href="/signup" className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
+            Sign up
+          </Link>
         </div>
       </header>
 

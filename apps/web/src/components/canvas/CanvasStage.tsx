@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect } from 'react';
-import { Stage, Layer, Rect, Circle, Text, Transformer } from 'react-konva';
+import { Stage, Layer, Rect, Circle, Text, Line as ShapeLine, Transformer } from 'react-konva';
 import { useCanvasStore } from '../../store/canvas';
 import type { CanvasElement } from '@polotno/types';
 
@@ -107,6 +107,21 @@ export default function CanvasStage() {
                 align={el.align}
                 fontStyle={el.fontStyle}
               />
+            );
+          }
+          if (el.type === 'line') {
+            return (
+              <React.Fragment key={el.id}>
+                {/* Note: we have to import Line from react-konva if not imported already. */}
+                <ShapeLine
+                  {...commonProps}
+                  points={el.points || [0, 0, 100, 100]}
+                  stroke={el.stroke || '#000000'}
+                  strokeWidth={el.strokeWidth || 2}
+                  lineCap="round"
+                  lineJoin="round"
+                />
+              </React.Fragment>
             );
           }
           return null;

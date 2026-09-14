@@ -1,16 +1,21 @@
 'use client';
-
-import React from 'react';
 import dynamic from 'next/dynamic';
-import { Square, Circle, Type, Image as ImageIcon, Minus } from '@phosphor-icons/react';
+import { 
+  SquareIcon, 
+  CircleIcon,
+  ArticleIcon, 
+  ImageIcon, 
+  MinusIcon,
+  CursorIcon,
+  HandIcon
+} from '@phosphor-icons/react';
 import { useCanvasStore } from '../../store/canvas';
 import { v4 as uuidv4 } from 'uuid';
 
-// Dynamically import the Konva stage so it doesn't break SSR
 const CanvasStage = dynamic(() => import('./CanvasStage'), { ssr: false });
 
 export default function CanvasEditor() {
-  const { addElement, selectedId, elements, updateElement, deleteElement } = useCanvasStore();
+  const { addElement, selectedId, elements, updateElement, deleteElement, selectElement } = useCanvasStore();
 
   const selectedElement = elements.find((el) => el.id === selectedId);
 
@@ -63,18 +68,50 @@ export default function CanvasEditor() {
     });
   };
 
+  const handleAddLine = () => {
+    addElement({
+      id: uuidv4(),
+      type: 'line',
+      x: 150,
+      y: 150,
+      width: 100,
+      height: 100,
+      points: [0, 0, 100, 100],
+      rotation: 0,
+      zIndex: elements.length,
+      opacity: 1,
+      stroke: '#000000',
+      strokeWidth: 2,
+      pointerAtEnd: false
+    });
+  };
+
   return (
     <div className="flex flex-1 h-[calc(100vh-64px)] overflow-hidden bg-gray-50">
-      {/* Left Toolbar */}
-      <div className="w-16 bg-white border-r border-gray-200 flex flex-col items-center py-4 space-y-4">
+      <div className="w-16 bg-white border-r border-gray-200 flex flex-col items-center py-4 space-y-4 shadow-sm z-10">
+        <button onClick={() => selectElement(null)} className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors" title="Select">
+          <CursorIcon  size={32} weight="regular" />
+        </button>
+        <button className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors" title="Pan (Hand)">
+          <HandIcon size={32} weight="regular" />
+        </button>
+        
+        <div className="w-8 h-px bg-gray-200 my-2"></div>
+
         <button onClick={handleAddRectangle} className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors" title="Rectangle">
-          <Square size={24} weight="regular" />
+          <SquareIcon size={32} weight="regular" />
         </button>
         <button onClick={handleAddCircle} className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors" title="Circle">
-          <Circle size={24} weight="regular" />
+          <CircleIcon size={32} weight="regular" />
         </button>
         <button onClick={handleAddText} className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors" title="Text">
-          <Type size={24} weight="regular" />
+          <ArticleIcon size={32} weight="regular" />
+        </button>
+        <button onClick={handleAddLine} className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors" title="Line">
+          <MinusIcon size={32} weight="regular" />
+        </button>
+        <button className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors" title="Image">
+          <ImageIcon size={32} weight="regular" />
         </button>
       </div>
 
@@ -147,6 +184,29 @@ export default function CanvasEditor() {
                   onChange={(e) => updateElement(selectedElement.id, { fill: e.target.value })}
                   className="w-full h-8 cursor-pointer rounded" 
                 />
+              </div>
+            ) : null}
+
+            {selectedElement.type === 'line' ? (
+              <div className="pt-2 space-y-3">
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Stroke Color</label>
+                  <input 
+                    type="color" 
+                    value={(selectedElement as any).stroke || '#000000'} 
+                    onChange={(e) => updateElement(selectedElement.id, { stroke: e.target.value })}
+                    className="w-full h-8 cursor-pointer rounded" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Stroke Width</label>
+                  <input 
+                    type="number" 
+                    value={(selectedElement as any).strokeWidth || 2} 
+                    onChange={(e) => updateElement(selectedElement.id, { strokeWidth: Number(e.target.value) })}
+                    className="w-full text-sm border border-gray-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" 
+                  />
+                </div>
               </div>
             ) : null}
 
