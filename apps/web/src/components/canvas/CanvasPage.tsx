@@ -25,17 +25,34 @@ export default function CanvasPage({ canvasId }: { canvasId: string }) {
     return () => resetCanvas();
   }, [canvasId, user, loadCanvas, resetCanvas]);
 
-  // Keyboard shortcut: Ctrl/Cmd + S to save
+  // Keyboard shortcut: Ctrl/Cmd + S to save, Ctrl/Cmd+Z for undo, Ctrl/Cmd+Shift+Z for redo
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 's') {
         e.preventDefault();
         saveCanvas();
       }
+      if ((e.metaKey || e.ctrlKey) && !e.shiftKey && e.key === 'z') {
+        e.preventDefault();
+        useCanvasStore.getState().undo();
+      }
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'z' || e.key === 'Z')) {
+        e.preventDefault();
+        useCanvasStore.getState().redo();
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [saveCanvas]);
+
+  // Auto-save after 3 seconds of inactivity while dirty
+  useEffect(() => {
+    if (!isDirty) return;
+    const timer = setTimeout(() => {
+      saveCanvas();
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [isDirty, saveCanvas]);
 
   if (authLoading || !user) {
     return (

@@ -1,14 +1,34 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
-import { Stage, Layer, Rect, Circle, Text, Line as ShapeLine, Transformer } from 'react-konva';
+import React, { useRef, useEffect, useState } from 'react';
+import { Stage, Layer, Rect, Circle, Text, Line as ShapeLine, Arrow, Image as KonvaImage, Transformer } from 'react-konva';
 import { useCanvasStore } from '../../store/canvas';
 import type Konva from 'konva';
 
+function URLImage({ el, commonProps }: { el: any, commonProps: any }) {
+  const [img, setImg] = useState<HTMLImageElement | undefined>(undefined);
+  
+  useEffect(() => {
+    const image = new window.Image();
+    image.crossOrigin = 'Anonymous';
+    image.src = el.src;
+    image.onload = () => setImg(image);
+  }, [el.src]);
+  
+  return <KonvaImage key={el.id} {...commonProps} image={img} />;
+}
+
 export default function CanvasStage() {
-  const { elements, selectedId, selectElement, updateElement } = useCanvasStore();
+  const { elements, selectedId, selectElement, updateElement, setStageRef } = useCanvasStore();
   const trRef = useRef<Konva.Transformer>(null);
   const layerRef = useRef<Konva.Layer>(null);
+  const stageRef = useRef<Konva.Stage>(null);
+
+  useEffect(() => {
+    if (stageRef.current) {
+      setStageRef(stageRef.current);
+    }
+  }, [setStageRef]);
 
   useEffect(() => {
     if (selectedId && trRef.current && layerRef.current) {
@@ -31,6 +51,7 @@ export default function CanvasStage() {
 
   return (
     <Stage
+      ref={stageRef}
       width={typeof window !== 'undefined' ? window.innerWidth - 320 - 64 : 800} // Rough calc: screen - right panel - left rail
       height={typeof window !== 'undefined' ? window.innerHeight - 64 : 600}
       onMouseDown={checkDeselect}
@@ -110,19 +131,22 @@ export default function CanvasStage() {
               />
             );
           }
+          if (el.type === 'image') {
+            return <URLImage key={el.id} el={el} commonProps={commonProps} />;
+          }
           if (el.type === 'line') {
-            return (
-              <React.Fragment key={el.id}>
-                {/* Note: we have to import Line from react-konva if not imported already. */}
-                <ShapeLine
-                  {...commonProps}
-                  points={el.points || [0, 0, 100, 100]}
-                  stroke={el.stroke || '#000000'}
-                  strokeWidth={el.strokeWidth || 2}
-                  lineCap="round"
-                  lineJoin="round"
-                />
-              </React.Fragment>
+            const lineProps = {
+              ...commonProps,
+              points: el.points || [0, 0, 100, 100],
+              stroke: el.stroke || '#000000',
+              strokeWidth: el.strokeWidth || 2,
+              lineCap: 'round' as const,
+              lineJoin: 'round' as const,
+            };
+            return el.pointerAtEnd ? (
+              <Arrow key={el.id} {...lineProps} pointerLength={10} pointerWidth={10} />
+            ) : (
+              <ShapeLine key={el.id} {...lineProps} />
             );
           }
           return null;
