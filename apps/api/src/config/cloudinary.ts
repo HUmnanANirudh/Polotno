@@ -1,10 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import { env } from './env.ts';
 
-cloudinary.config({
-  cloud_name: env.CLOUDINARY_CLOUD_NAME,
-  api_key: env.CLOUDINARY_API_KEY,
-  api_secret: env.CLOUDINARY_API_SECRET,
-});
+// Cloudinary v2 automatically picks up the CLOUDINARY_URL from process.env
+// which is validated in env.ts
 
 export { cloudinary };

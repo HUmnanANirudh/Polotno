@@ -22,6 +22,7 @@ interface CanvasState {
   setElements: (elements: CanvasElement[]) => void;
   addElement: (element: CanvasElement) => void;
   updateElement: (id: string, data: Partial<CanvasElement>) => void;
+  updateElementVisual: (id: string, data: Partial<CanvasElement>) => void;
   deleteElement: (id: string) => void;
   selectElement: (id: string | null) => void;
   setStageRef: (ref: any) => void;
@@ -78,6 +79,14 @@ export const useCanvasStore = create<CanvasState>((set, get) => ({
   updateElement: (id, data) =>
     set((state) => ({
       ...pushHistory(state),
+      elements: state.elements.map((el) =>
+        el.id === id ? ({ ...el, ...data } as CanvasElement) : el
+      ),
+      isDirty: true,
+    })),
+
+  updateElementVisual: (id, data) =>
+    set((state) => ({
       elements: state.elements.map((el) =>
         el.id === id ? ({ ...el, ...data } as CanvasElement) : el
       ),

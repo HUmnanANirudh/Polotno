@@ -19,7 +19,8 @@ function URLImage({ el, commonProps }: { el: any, commonProps: any }) {
 }
 
 export default function CanvasStage() {
-  const { elements, selectedId, selectElement, updateElement, setStageRef } = useCanvasStore();
+  const { elements, selectedId, selectElement, updateElement, updateElementVisual, setStageRef } = useCanvasStore();
+
   const trRef = useRef<Konva.Transformer>(null);
   const layerRef = useRef<Konva.Layer>(null);
   const stageRef = useRef<Konva.Stage>(null);
@@ -93,6 +94,34 @@ export default function CanvasStage() {
     >
       <Layer ref={layerRef}>
         {elements.map((el) => {
+          const handleTransform = (e: Konva.KonvaEventObject<Event>, isEnd: boolean) => {
+            const node = e.target;
+            const scaleX = node.scaleX();
+            const scaleY = node.scaleY();
+            node.scaleX(1);
+            node.scaleY(1);
+            
+            const updateFn = isEnd ? updateElement : updateElementVisual;
+            
+            if (el.type === 'line' && el.points) {
+              const newPoints = el.points.map((p, i) => i % 2 === 0 ? p * scaleX : p * scaleY);
+              updateFn(el.id, {
+                x: node.x(),
+                y: node.y(),
+                rotation: node.rotation(),
+                points: newPoints,
+              });
+            } else {
+              updateFn(el.id, {
+                x: node.x(),
+                y: node.y(),
+                rotation: node.rotation(),
+                width: Math.max(5, node.width() * scaleX),
+                height: Math.max(5, node.height() * scaleY),
+              });
+            }
+          };
+
           const commonProps = {
             id: el.id,
             x: el.x,
@@ -100,42 +129,17 @@ export default function CanvasStage() {
             width: el.width,
             height: el.height,
             rotation: el.rotation,
-            scaleX: 1,
-            scaleY: 1,
             draggable: true,
             onClick: () => selectElement(el.id),
             onTap: () => selectElement(el.id),
+            onDragMove: (e: Konva.KonvaEventObject<DragEvent>) => {
+              updateElementVisual(el.id, { x: e.target.x(), y: e.target.y() });
+            },
             onDragEnd: (e: Konva.KonvaEventObject<DragEvent>) => {
-              updateElement(el.id, {
-                x: e.target.x(),
-                y: e.target.y(),
-              });
+              updateElement(el.id, { x: e.target.x(), y: e.target.y() });
             },
-            onTransformEnd: (e: Konva.KonvaEventObject<Event>) => {
-              const node = e.target;
-              const scaleX = node.scaleX();
-              const scaleY = node.scaleY();
-              node.scaleX(1);
-              node.scaleY(1);
-              
-              if (el.type === 'line' && el.points) {
-                const newPoints = el.points.map((p, i) => i % 2 === 0 ? p * scaleX : p * scaleY);
-                updateElement(el.id, {
-                  x: node.x(),
-                  y: node.y(),
-                  rotation: node.rotation(),
-                  points: newPoints,
-                });
-              } else {
-                updateElement(el.id, {
-                  x: node.x(),
-                  y: node.y(),
-                  rotation: node.rotation(),
-                  width: Math.max(5, node.width() * scaleX),
-                  height: Math.max(5, node.height() * scaleY),
-                });
-              }
-            },
+            onTransform: (e: Konva.KonvaEventObject<Event>) => handleTransform(e, false),
+            onTransformEnd: (e: Konva.KonvaEventObject<Event>) => handleTransform(e, true),
           };
 
           if (el.type === 'rectangle') {
