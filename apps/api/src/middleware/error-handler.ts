@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import multer from 'multer';
-import { Prisma } from '../../generated/prisma/client.ts';
+import { Prisma } from '../generated/prisma';
 import { AppError } from '../lib/app-error.ts';
 
 export function errorHandler(
