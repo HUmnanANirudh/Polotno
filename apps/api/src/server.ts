@@ -41,8 +41,12 @@ app.use('/api/upload', uploadRoutes);
 
 app.use(errorHandler);
 
-app.listen(env.PORT, () => {
-  console.log(`Server running on port ${env.PORT}`);
-});
+// Only listen to the port if we are NOT running on Vercel.
+// Vercel handles the server binding automatically via the exported app.
+if (!process.env.VERCEL) {
+  app.listen(env.PORT, () => {
+    console.log(`Server running on port ${env.PORT}`);
+  });
+}
 
 export default app;
