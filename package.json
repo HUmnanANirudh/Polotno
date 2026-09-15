@@ -12,7 +12,8 @@
     "dev:web": "bun run --filter web dev",
     "build": "bun run build:api && bun run build:web",
     "build:api": "bun run --filter api build",
-    "build:web": "bun run --filter web build"
+    "build:web": "bun run --filter web build",
+    "postinstall": "bun run --filter api db:generate"
   },
   "devDependencies": {
     "@types/bun": "latest",
