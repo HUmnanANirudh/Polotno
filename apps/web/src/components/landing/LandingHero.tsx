@@ -12,8 +12,6 @@ export default function LandingHero() {
       <div className="absolute inset-0 z-0">
         <CloudShader speed={0.5} count={5} />
       </div>
-      
-      {/* Nav */}
       <header className="absolute top-0 w-full h-24 flex items-center justify-between px-8 md:px-16 lg:px-24 z-50">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
@@ -44,8 +42,6 @@ export default function LandingHero() {
           )}
         </div>
       </header>
-
-      {/* Hero */}
       <div className="relative z-10 flex-1 flex flex-col justify-center px-8 md:px-16 lg:px-24">
         <div className="max-w-3xl">
           <h1 

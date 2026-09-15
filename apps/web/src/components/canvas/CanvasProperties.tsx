@@ -30,14 +30,14 @@ function PropertyInput({ label, value, onChange, type = "number", min }: any) {
 
   return (
     <div>
-      <label className="block text-xs text-gray-500 mb-0.5">{label}</label>
+      <label className="block text-xs text-gray-700 font-medium mb-0.5">{label}</label>
       <input 
         type={type === 'number' ? 'text' : type}
         value={localValue} 
         onChange={handleChange}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
-        className="w-full text-sm border border-gray-200 rounded px-2 py-1.5 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" 
+        className="w-full text-sm border border-gray-200 rounded px-2 py-1.5 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-gray-900" 
       />
     </div>
   );
@@ -78,7 +78,7 @@ export function CanvasProperties() {
 
           {selectedElement.type === 'rectangle' || selectedElement.type === 'circle' ? (
             <div className="pt-2">
-              <label className="block text-xs text-gray-500 mb-1">Fill</label>
+              <label className="block text-xs text-gray-700 font-medium mb-1">Fill</label>
               <input 
                 type="color" 
                 value={(selectedElement as any).fill || '#cccccc'} 
@@ -100,7 +100,7 @@ export function CanvasProperties() {
                 <span className="text-sm text-gray-700">Arrowhead</span>
               </label>
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Stroke Color</label>
+                <label className="block text-xs text-gray-700 font-medium mb-1">Stroke Color</label>
                 <input 
                   type="color" 
                   value={(selectedElement as any).stroke || '#000000'} 
@@ -115,18 +115,18 @@ export function CanvasProperties() {
           {selectedElement.type === 'text' && (
             <div className="pt-2 space-y-4">
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Text</label>
+                <label className="block text-xs text-gray-700 font-medium mb-1">Text</label>
                 <textarea 
                   value={(selectedElement as any).text} 
                   onChange={(e) => updateElement(selectedElement.id, { text: e.target.value })}
-                  className="w-full text-sm border border-gray-200 rounded px-2 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full text-sm border border-gray-200 rounded px-2 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   rows={3}
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <PropertyInput label="Font Size" min={1} value={(selectedElement as any).fontSize || 24} onChange={(v: number) => updateElement(selectedElement.id, { fontSize: v })} />
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">Color</label>
+                  <label className="block text-xs text-gray-700 font-medium mb-1">Color</label>
                   <input 
                     type="color" 
                     value={(selectedElement as any).fill || '#000000'} 
