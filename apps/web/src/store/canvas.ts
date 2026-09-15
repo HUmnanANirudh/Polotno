@@ -156,12 +156,18 @@ export const useCanvasStore = create<CanvasState>((set, get) => ({
   },
 
   saveCanvas: async () => {
-    const { canvasId, elements } = get();
+    const { canvasId, elements, stageRef } = get();
     if (!canvasId) return;
 
     set({ isSaving: true });
     try {
-      await api.put(`/canvases/${canvasId}`, { elements });
+      let thumbnail = null;
+      if (stageRef) {
+        // Generate a thumbnail (scaled down to save space)
+        thumbnail = stageRef.toDataURL({ pixelRatio: 0.3 });
+      }
+
+      await api.put(`/canvases/${canvasId}`, { elements, thumbnail });
       set({ isDirty: false, isSaving: false });
     } catch (err) {
       console.error('Failed to save canvas:', err);

@@ -93,6 +93,15 @@ export default function CanvasStage() {
       className="bg-white shadow-sm border border-gray-200"
     >
       <Layer ref={layerRef}>
+        {/* Background Rect to ensure exported PNGs have a white background instead of transparent */}
+        <Rect
+          x={0}
+          y={0}
+          width={typeof window !== 'undefined' ? window.innerWidth : 800}
+          height={typeof window !== 'undefined' ? window.innerHeight : 600}
+          fill="white"
+          listening={false}
+        />
         {elements.map((el) => {
           const handleTransform = (e: Konva.KonvaEventObject<Event>, isEnd: boolean) => {
             const node = e.target;

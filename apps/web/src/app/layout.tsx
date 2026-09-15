@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Polotno — Design Canvas",
+  title: "Polotno",
   description: "A mini design canvas for creating and editing visual compositions",
 };
 

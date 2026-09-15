@@ -146,10 +146,18 @@ export default function DashboardView() {
                 className="group bg-white rounded-xl border border-gray-200 overflow-hidden cursor-pointer hover:shadow-md hover:border-gray-300 transition-all"
               >
                 {/* Preview area */}
-                <div className="h-40 bg-gray-50 flex items-center justify-center border-b border-gray-100">
-                  <span className="text-xs text-gray-300 font-medium">
-                    {canvas.width} × {canvas.height}
-                  </span>
+                <div className="h-40 bg-gray-50 flex items-center justify-center border-b border-gray-100 relative overflow-hidden">
+                  {canvas.thumbnail ? (
+                    <img 
+                      src={canvas.thumbnail} 
+                      alt={canvas.name} 
+                      className="w-full h-full object-contain p-2"
+                    />
+                  ) : (
+                    <span className="text-xs text-gray-300 font-medium">
+                      {canvas.width} × {canvas.height}
+                    </span>
+                  )}
                 </div>
 
                 {/* Info */}
