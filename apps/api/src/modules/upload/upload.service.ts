@@ -9,12 +9,12 @@ export async function uploadImageToCloudinary(
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
-        folder: 'polotno/images',
         resource_type: 'image',
       },
       (error, result) => {
         if (error || !result) {
-          reject(new AppError(500, 'Failed to upload image to Cloudinary'));
+          console.error('Cloudinary upload error:', error);
+          reject(new AppError(500, `Failed to upload image to Cloudinary: ${error?.message || 'Unknown error'}`));
           return;
         }
         resolve({ url: result.secure_url, publicId: result.public_id });
