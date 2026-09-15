@@ -90,6 +90,12 @@ bun run dev
 ```
 This command starts both the frontend and backend at the same time. Open `http://localhost:3000` in your browser to use the app.
 
+### Test Account
+Use these credentials to test the application:
+
+- **Email**: `test@gmail.com`
+- **Password**: `12345678`
+
 ## API Endpoints
 
 ### Authentication
