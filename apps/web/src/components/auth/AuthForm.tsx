@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '../../store/auth';
 import { loginSchema, registerSchema } from '@polotno/types';
-import { ZodError } from 'zod';
+import toast from 'react-hot-toast';
+import { SpinnerGapIcon } from '@phosphor-icons/react';
 
 type AuthMode = 'login' | 'signup';
 
@@ -38,13 +39,11 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setFormErrors({});
     clearError();
 
@@ -54,15 +53,17 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
       } else {
         loginSchema.parse({ email, password });
       }
-    } catch (err) {
-      if (err instanceof ZodError) {
+    } catch (err: any) {
+      if (err.name === 'ZodError' || err.issues) {
         const errors: Record<string, string> = {};
-        err.errors.forEach(errItem => {
+        const issues = err.issues || err.errors || [];
+        issues.forEach((errItem: any) => {
           if (errItem.path[0]) {
             errors[errItem.path[0].toString()] = errItem.message;
           }
         });
         setFormErrors(errors);
+        toast.error('Please fix the errors in the form');
         return;
       }
     }
@@ -75,10 +76,11 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
       } else {
         await login(email, password);
       }
+      toast.success('Successfully logged in!');
       router.push('/dashboard');
     } catch (err) {
       const e = err as Error;
-      setError(e.message || 'Something went wrong');
+      toast.error(e.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -88,12 +90,6 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
     <>
       <h2 className="text-2xl font-bold text-gray-900 tracking-tight">{c.title}</h2>
       <p className="mt-2 text-sm text-gray-500">{c.subtitle}</p>
-
-      {error && (
-        <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-600">{error}</p>
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-5" noValidate>
         {mode === 'signup' && (
@@ -173,8 +169,9 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white text-sm font-medium rounded-lg transition-colors shadow-sm"
+          className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white text-sm font-medium rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2"
         >
+          {loading && <SpinnerGapIcon size={18} className="animate-spin" />}
           {loading ? c.loadingText : c.submitText}
         </button>
       </form>

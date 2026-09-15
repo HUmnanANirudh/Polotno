@@ -27,7 +27,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
     error: null,
 
     login: async (email, password) => {
-      set({ isLoading: true, error: null });
+      set({ error: null });
       try {
         const res = await api.post<{ user: UserResponse; accessToken: string }>(
           '/auth/login',
@@ -36,17 +36,16 @@ export const useAuthStore = create<AuthState>((set, get) => {
         set({
           user: res.data!.user,
           accessToken: res.data!.accessToken,
-          isLoading: false,
         });
       } catch (err) {
         const message = err instanceof ApiError ? err.message : 'Login failed';
-        set({ error: message, isLoading: false });
+        set({ error: message });
         throw err;
       }
     },
 
     register: async (name, email, password) => {
-      set({ isLoading: true, error: null });
+      set({ error: null });
       try {
         const res = await api.post<{ user: UserResponse; accessToken: string }>(
           '/auth/register',
@@ -55,11 +54,10 @@ export const useAuthStore = create<AuthState>((set, get) => {
         set({
           user: res.data!.user,
           accessToken: res.data!.accessToken,
-          isLoading: false,
         });
       } catch (err) {
         const message = err instanceof ApiError ? err.message : 'Registration failed';
-        set({ error: message, isLoading: false });
+        set({ error: message });
         throw err;
       }
     },
