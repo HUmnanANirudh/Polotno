@@ -15,13 +15,6 @@ export default function DashboardView() {
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
 
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/login');
-    }
-  }, [authLoading, user, router]);
-
   // Fetch canvases
   useEffect(() => {
     if (!user) return;

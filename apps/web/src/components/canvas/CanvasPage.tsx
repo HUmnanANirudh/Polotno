@@ -16,13 +16,6 @@ export default function CanvasPage({ canvasId }: { canvasId: string }) {
   const [loadError, setLoadError] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/login');
-    }
-  }, [authLoading, user, router]);
-
   // Load canvas
   useEffect(() => {
     if (!user) return;
