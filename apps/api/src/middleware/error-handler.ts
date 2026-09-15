@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import multer from 'multer';
-import { Prisma } from '../generated/prisma';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { AppError } from '../lib/app-error.ts';
 
 export function errorHandler(
@@ -43,8 +43,10 @@ export function errorHandler(
     return;
   }
 
-  if (err instanceof Prisma.PrismaClientKnownRequestError) {
-    if (err.code === 'P2002') {
+  if (err instanceof PrismaClientKnownRequestError) {
+    const prismaError = err;
+
+    if (prismaError.code === 'P2002') {
       res.status(409).json({
         success: false,
         message: 'A record with this value already exists',
