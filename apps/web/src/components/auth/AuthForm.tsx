@@ -52,8 +52,9 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
         await login(email, password);
       }
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong');
+    } catch (err) {
+      const e = err as Error;
+      setError(e.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }

@@ -22,7 +22,7 @@ export async function findAll(req: Request, res: Response) {
 
 export async function findById(req: Request, res: Response) {
   const userId = req.user!.userId;
-  const canvasId = req.params.id;
+  const canvasId = req.params.id as string;
   const canvas = await canvasService.findById(userId, canvasId);
   res.status(200).json({
     success: true,
@@ -32,7 +32,7 @@ export async function findById(req: Request, res: Response) {
 
 export async function update(req: Request, res: Response) {
   const userId = req.user!.userId;
-  const canvasId = req.params.id;
+  const canvasId = req.params.id as string;
   const input = req.body;
   const canvas = await canvasService.update(userId, canvasId, input);
   res.status(200).json({
@@ -43,7 +43,7 @@ export async function update(req: Request, res: Response) {
 
 export async function remove(req: Request, res: Response) {
   const userId = req.user!.userId;
-  const canvasId = req.params.id;
+  const canvasId = req.params.id as string;
   await canvasService.remove(userId, canvasId);
   res.status(204).send();
 }

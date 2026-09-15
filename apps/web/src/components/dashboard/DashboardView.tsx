@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../../store/auth';
-import { api, ApiError } from '../../lib/api';
+import { api } from '../../lib/api';
 import { PlusIcon, TrashIcon, SpinnerGapIcon } from '@phosphor-icons/react';
 import type { CanvasResponse } from '@polotno/types';
 
@@ -15,12 +15,6 @@ export default function DashboardView() {
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
 
-  // Fetch canvases
-  useEffect(() => {
-    if (!user) return;
-    fetchCanvases();
-  }, [user]);
-
   const fetchCanvases = async () => {
     try {
       const res = await api.get<CanvasResponse[]>('/canvases');
@@ -31,6 +25,13 @@ export default function DashboardView() {
       setLoading(false);
     }
   };
+
+  // Fetch canvases
+  useEffect(() => {
+    if (!user) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchCanvases();
+  }, [user]);
 
   const handleCreate = async () => {
     setCreating(true);

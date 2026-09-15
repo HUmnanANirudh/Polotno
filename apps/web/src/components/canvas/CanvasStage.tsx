@@ -3,26 +3,26 @@
 import React, { useRef, useEffect } from 'react';
 import { Stage, Layer, Rect, Circle, Text, Line as ShapeLine, Transformer } from 'react-konva';
 import { useCanvasStore } from '../../store/canvas';
-import type { CanvasElement } from '@polotno/types';
+import type Konva from 'konva';
 
 export default function CanvasStage() {
   const { elements, selectedId, selectElement, updateElement } = useCanvasStore();
-  const trRef = useRef<any>(null);
-  const layerRef = useRef<any>(null);
+  const trRef = useRef<Konva.Transformer>(null);
+  const layerRef = useRef<Konva.Layer>(null);
 
   useEffect(() => {
-    if (selectedId && trRef.current) {
+    if (selectedId && trRef.current && layerRef.current) {
       const node = layerRef.current.findOne(`#${selectedId}`);
       if (node) {
         trRef.current.nodes([node]);
-        trRef.current.getLayer().batchDraw();
+        trRef.current.getLayer()?.batchDraw();
       }
     } else if (trRef.current) {
       trRef.current.nodes([]);
     }
   }, [selectedId, elements]);
 
-  const checkDeselect = (e: any) => {
+  const checkDeselect = (e: Konva.KonvaEventObject<MouseEvent | TouchEvent>) => {
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
       selectElement(null);
@@ -39,9 +39,7 @@ export default function CanvasStage() {
     >
       <Layer ref={layerRef}>
         {elements.map((el) => {
-          const isSelected = el.id === selectedId;
           const commonProps = {
-            key: el.id,
             id: el.id,
             x: el.x,
             y: el.y,
@@ -51,13 +49,13 @@ export default function CanvasStage() {
             draggable: true,
             onClick: () => selectElement(el.id),
             onTap: () => selectElement(el.id),
-            onDragEnd: (e: any) => {
+            onDragEnd: (e: Konva.KonvaEventObject<DragEvent>) => {
               updateElement(el.id, {
                 x: e.target.x(),
                 y: e.target.y(),
               });
             },
-            onTransformEnd: (e: any) => {
+            onTransformEnd: (e: Konva.KonvaEventObject<Event>) => {
               const node = e.target;
               const scaleX = node.scaleX();
               const scaleY = node.scaleY();
@@ -76,6 +74,7 @@ export default function CanvasStage() {
           if (el.type === 'rectangle') {
             return (
               <Rect
+                key={el.id}
                 {...commonProps}
                 fill={el.fill}
                 stroke={el.stroke}
@@ -88,6 +87,7 @@ export default function CanvasStage() {
             // Konva Circle uses radius, but we treat width/height as bounding box in our schema
             return (
               <Circle
+                key={el.id}
                 {...commonProps}
                 radius={Math.min(el.width, el.height) / 2}
                 fill={el.fill}
@@ -99,6 +99,7 @@ export default function CanvasStage() {
           if (el.type === 'text') {
             return (
               <Text
+                key={el.id}
                 {...commonProps}
                 text={el.text}
                 fontSize={el.fontSize}

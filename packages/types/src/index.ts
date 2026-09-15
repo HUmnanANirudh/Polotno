@@ -1,3 +1,3 @@
-export * from './schemas/common.ts';
-export * from './schemas/user.ts';
-export * from './schemas/canvas.ts';
+export * from './schemas/common';
+export * from './schemas/user';
+export * from './schemas/canvas';

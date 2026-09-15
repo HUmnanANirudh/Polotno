@@ -8,9 +8,11 @@
   ],
   "scripts": {
     "dev": "concurrently --names api,web --prefix-colors blue,green \"bun run dev:api\" \"bun run dev:web\"",
-    "dev:api": "bun --filter api run dev",
-    "dev:web": "bun --filter web run dev",
-    "build": "bun --filter web run build"
+    "dev:api": "bun run --filter api dev",
+    "dev:web": "bun run --filter web dev",
+    "build": "bun run build:api && bun run build:web",
+    "build:api": "bun run --filter api build",
+    "build:web": "bun run --filter web build"
   },
   "devDependencies": {
     "@types/bun": "latest",

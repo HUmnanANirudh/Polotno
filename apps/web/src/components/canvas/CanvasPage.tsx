@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCanvasStore } from '../../store/canvas';
 import { useAuthStore } from '../../store/auth';
@@ -9,7 +8,6 @@ import { SpinnerGapIcon, ArrowLeftIcon, FloppyDiskIcon, CheckIcon } from '@phosp
 import CanvasEditor from './CanvasEditor';
 
 export default function CanvasPage({ canvasId }: { canvasId: string }) {
-  const router = useRouter();
   const { user, isLoading: authLoading } = useAuthStore();
   const { canvasName, isDirty, isSaving, loadCanvas, saveCanvas, resetCanvas } = useCanvasStore();
 

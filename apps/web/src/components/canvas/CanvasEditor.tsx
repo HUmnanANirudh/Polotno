@@ -1,4 +1,5 @@
 'use client';
+import type { CanvasElement } from '@polotno/types';
 import dynamic from 'next/dynamic';
 import { 
   SquareIcon, 
@@ -180,7 +181,7 @@ export default function CanvasEditor() {
                 <label className="block text-xs text-gray-500 mb-1">Fill</label>
                 <input 
                   type="color" 
-                  value={(selectedElement as any).fill || '#cccccc'} 
+                  value={(selectedElement as CanvasElement & { fill?: string, stroke?: string, strokeWidth?: number, text?: string, fontSize?: number }).fill || '#cccccc'} 
                   onChange={(e) => updateElement(selectedElement.id, { fill: e.target.value })}
                   className="w-full h-8 cursor-pointer rounded" 
                 />
@@ -193,7 +194,7 @@ export default function CanvasEditor() {
                   <label className="block text-xs text-gray-500 mb-1">Stroke Color</label>
                   <input 
                     type="color" 
-                    value={(selectedElement as any).stroke || '#000000'} 
+                    value={(selectedElement as CanvasElement & { fill?: string, stroke?: string, strokeWidth?: number, text?: string, fontSize?: number }).stroke || '#000000'} 
                     onChange={(e) => updateElement(selectedElement.id, { stroke: e.target.value })}
                     className="w-full h-8 cursor-pointer rounded" 
                   />
@@ -202,7 +203,7 @@ export default function CanvasEditor() {
                   <label className="block text-xs text-gray-500 mb-1">Stroke Width</label>
                   <input 
                     type="number" 
-                    value={(selectedElement as any).strokeWidth || 2} 
+                    value={(selectedElement as CanvasElement & { fill?: string, stroke?: string, strokeWidth?: number, text?: string, fontSize?: number }).strokeWidth || 2} 
                     onChange={(e) => updateElement(selectedElement.id, { strokeWidth: Number(e.target.value) })}
                     className="w-full text-sm border border-gray-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" 
                   />
@@ -215,7 +216,7 @@ export default function CanvasEditor() {
                 <div>
                   <label className="block text-xs text-gray-500 mb-1">Text</label>
                   <textarea 
-                    value={(selectedElement as any).text} 
+                    value={(selectedElement as CanvasElement & { fill?: string, stroke?: string, strokeWidth?: number, text?: string, fontSize?: number }).text} 
                     onChange={(e) => updateElement(selectedElement.id, { text: e.target.value })}
                     className="w-full text-sm border border-gray-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     rows={3}
@@ -225,7 +226,7 @@ export default function CanvasEditor() {
                   <label className="block text-xs text-gray-500 mb-1">Font Size</label>
                   <input 
                     type="number" 
-                    value={(selectedElement as any).fontSize} 
+                    value={(selectedElement as CanvasElement & { fill?: string, stroke?: string, strokeWidth?: number, text?: string, fontSize?: number }).fontSize} 
                     onChange={(e) => updateElement(selectedElement.id, { fontSize: Number(e.target.value) })}
                     className="w-full text-sm border border-gray-200 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" 
                   />
@@ -234,7 +235,7 @@ export default function CanvasEditor() {
                   <label className="block text-xs text-gray-500 mb-1">Color</label>
                   <input 
                     type="color" 
-                    value={(selectedElement as any).fill || '#000000'} 
+                    value={(selectedElement as CanvasElement & { fill?: string, stroke?: string, strokeWidth?: number, text?: string, fontSize?: number }).fill || '#000000'} 
                     onChange={(e) => updateElement(selectedElement.id, { fill: e.target.value })}
                     className="w-full h-8 cursor-pointer rounded" 
                   />
