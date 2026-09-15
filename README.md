@@ -1,15 +1,54 @@
-# polotno
+# Polotno
 
-To install dependencies:
+Polotno is a web-based design tool. Users can create, edit, and export visual designs using an interactive canvas.
 
-```bash
-bun install
-```
+## Features
 
-To run:
+- Add and edit shapes (rectangles, circles, lines) and text.
+- Upload and place images.
+- Select, move, and resize elements.
+- Save and load projects from a dashboard.
+- Export the canvas as a PNG image.
 
-```bash
-bun run index.ts
-```
+## Repository Structure
 
-This project was created using `bun init` in bun v1.3.11. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+This project uses a monorepo structure managed by Bun.
+
+- `apps/web`: The frontend application. We build it with Next.js, React, Tailwind CSS, and React-Konva.
+- `apps/api`: The backend API. We build it with Express, Prisma, and MongoDB.
+- `packages/types`: Shared TypeScript definitions and Zod schemas. Both the frontend and backend use this package to validate data.
+
+## Requirements
+
+To run this project locally, you need:
+
+- [Bun](https://bun.sh/)
+- A MongoDB database
+- A Cloudinary account (for image uploads)
+
+## Setup Instructions
+
+1. **Install Dependencies**
+   Run this command in the root folder to install all packages:
+   ```bash
+   bun install
+   ```
+
+2. **Configure the Environment**
+   You must provide environment variables for the backend. Create an `.env` file in `apps/api/` and add the following values:
+
+   ```env
+   DATABASE_URL="your_mongodb_connection_string"
+   PORT=4000
+   JWT_ACCESS_SECRET="your_access_secret"
+   JWT_REFRESH_SECRET="your_refresh_secret"
+   CLOUDINARY_URL="your_cloudinary_url"
+   CORS_ORIGIN="http://localhost:3000"
+   ```
+
+3. **Start the Application**
+   Run the development servers from the root folder:
+   ```bash
+   bun run dev
+   ```
+   This command starts both the frontend and backend at the same time. Open `http://localhost:3000` in your browser to use the app.
