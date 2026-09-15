@@ -2,66 +2,70 @@
 
 import Link from 'next/link';
 import { useAuthStore } from '../../store/auth';
-import { ArrowRightIcon } from '@phosphor-icons/react';
+import { CloudShader } from './Cloud';
 
 export default function LandingHero() {
   const { user, isLoading } = useAuthStore();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative overflow-hidden bg-blue-500">
+      <div className="absolute inset-0 z-0">
+        <CloudShader speed={0.5} count={5} />
+      </div>
+      
       {/* Nav */}
-      <header className="h-16 flex items-center justify-between px-6 bg-white border-b border-gray-200">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-blue-600 rounded-sm" />
-          <span className="font-bold text-gray-900 tracking-tight">Polotno</span>
+      <header className="absolute top-0 w-full h-24 flex items-center justify-between px-8 md:px-16 lg:px-24 z-50">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+              <div className="w-5 h-5 bg-blue-600 rounded-sm" />
+            </div>
+          <span className="font-bold text-white text-2xl tracking-tight">Polotno</span>
         </div>
-        {!isLoading && (
-          <div className="flex items-center gap-4">
-            {user ? (
-              <Link
-                href="/dashboard"
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm"
-              >
-                Go to Dashboard
-              </Link>
-            ) : (
-              <>
+
+        <div className="flex items-center">
+          {!isLoading && (
+            <>
+              {user ? (
+                <Link
+                  href="/dashboard"
+                  className="px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm rounded-full hover:bg-gray-50 transition-colors shadow-sm"
+                >
+                  Dashboard
+                </Link>
+              ) : (
                 <Link
                   href="/login"
-                  className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                  className="px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm rounded-full hover:bg-gray-50 transition-colors shadow-sm"
                 >
-                  Log in
+                  Sign in
                 </Link>
-                <Link
-                  href="/signup"
-                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm"
-                >
-                  Sign up free
-                </Link>
-              </>
-            )}
-          </div>
-        )}
+              )}
+            </>
+          )}
+        </div>
       </header>
 
       {/* Hero */}
-      <div className="flex-1 flex items-center justify-center px-6">
-        <div className="max-w-2xl text-center">
-          <h1 className="text-5xl font-bold text-gray-900 tracking-tight leading-tight">
-            Design without
-            <span className="text-blue-600"> boundaries</span>
+      <div className="relative z-10 flex-1 flex flex-col justify-center px-8 md:px-16 lg:px-24">
+        <div className="max-w-3xl">
+          <h1 
+            className="text-6xl md:text-7xl lg:text-[5.5rem] font-bold text-white tracking-tight leading-[1.05] mb-8"
+            style={{ textShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
+          >
+            Your window seat to limitless design
           </h1>
-          <p className="mt-6 text-lg text-gray-500 max-w-lg mx-auto leading-relaxed">
-            A simple, powerful canvas editor for creating visual compositions. 
-            Add shapes, text, and images — then save your work to the cloud.
+          <p 
+            className="text-lg md:text-2xl text-white/90 max-w-2xl leading-relaxed mb-12 font-medium" 
+            style={{ textShadow: '0 2px 10px rgba(0,0,0,0.1)' }}
+          >
+            Create, collaborate, and bring your visual ideas to life with a canvas that works the way you think.
           </p>
-          <div className="mt-10 flex items-center justify-center gap-4">
+          <div className="flex items-center gap-6">
             <Link
               href={user ? '/dashboard' : '/signup'}
-              className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-sm"
+              className="px-8 py-4 bg-white text-gray-900 font-bold rounded-full hover:bg-gray-50 transition-colors shadow-lg text-lg"
             >
-              Get Started
-              <ArrowRightIcon size={16} weight="bold" />
+              Start designing
             </Link>
           </div>
         </div>

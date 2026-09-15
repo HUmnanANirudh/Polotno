@@ -19,6 +19,10 @@ async function request<T>(
     ...(options.headers as Record<string, string>),
   };
 
+  if (headers['Content-Type'] === 'multipart/form-data') {
+    delete headers['Content-Type'];
+  }
+
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
@@ -55,17 +59,23 @@ export class ApiError extends Error {
 export const api = {
   get: <T>(path: string) => request<T>(path),
 
-  post: <T>(path: string, body?: unknown) =>
-    request<T>(path, {
+  post: <T>(path: string, body?: unknown) => {
+    const isFormData = body instanceof FormData;
+    return request<T>(path, {
       method: 'POST',
-      body: body ? JSON.stringify(body) : undefined,
-    }),
+      body: isFormData ? (body as FormData) : body ? JSON.stringify(body) : undefined,
+      headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : undefined, // Handled below
+    });
+  },
 
-  put: <T>(path: string, body?: unknown) =>
-    request<T>(path, {
+  put: <T>(path: string, body?: unknown) => {
+    const isFormData = body instanceof FormData;
+    return request<T>(path, {
       method: 'PUT',
-      body: body ? JSON.stringify(body) : undefined,
-    }),
+      body: isFormData ? (body as FormData) : body ? JSON.stringify(body) : undefined,
+      headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : undefined, // Handled below
+    });
+  },
 
   delete: <T>(path: string) =>
     request<T>(path, { method: 'DELETE' }),

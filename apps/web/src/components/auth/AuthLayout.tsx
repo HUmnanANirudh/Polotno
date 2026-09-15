@@ -1,24 +1,23 @@
 import Link from 'next/link';
+import { CloudShader } from '../landing/Cloud';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex">
-      {/* Left — Abstract Background */}
+      {/* Left — Cloud Shader Background */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-        {/* Gradient mesh background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800" />
-        
-        {/* Abstract shapes */}
-        <div className="absolute top-1/4 -left-20 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-10 w-64 h-64 bg-blue-400/20 rounded-full blur-2xl" />
-        <div className="absolute top-1/2 left-1/3 w-96 h-96 bg-indigo-300/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 z-0">
+          <CloudShader speed={1} count={6} />
+        </div>
+        <div className="absolute inset-0 bg-blue-900/40 mix-blend-multiply z-0" />
         
         {/* Grid pattern overlay */}
         <div
-          className="absolute inset-0 opacity-[0.04]"
+          className="absolute inset-0 opacity-[0.1]"
           style={{
             backgroundImage: `linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)`,
             backgroundSize: '40px 40px',
+            zIndex: 1
           }}
         />
 
