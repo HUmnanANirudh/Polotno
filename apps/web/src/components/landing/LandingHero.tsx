@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useAuthStore } from '../../store/auth';
 import { CloudShader } from './Cloud';
+import { Logo } from '../ui/Logo';
 
 export default function LandingHero() {
   const { user, isLoading } = useAuthStore();
@@ -14,9 +15,7 @@ export default function LandingHero() {
       </div>
       <header className="absolute top-0 w-full h-24 flex items-center justify-between px-8 md:px-16 lg:px-24 z-50">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <div className="w-5 h-5 bg-blue-600 rounded-sm" />
-            </div>
+          <Logo />
           <span className="font-bold text-white text-2xl tracking-tight">Polotno</span>
         </div>
 

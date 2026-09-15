@@ -1,11 +1,11 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '../../store/auth';
-import { api } from '../../lib/api';
-import { PlusIcon, TrashIcon, SpinnerGapIcon } from '@phosphor-icons/react';
-import type { CanvasResponse } from '@polotno/types';
+"use client";
+import { Logo } from "../ui/Logo";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "../../store/auth";
+import { api } from "../../lib/api";
+import { PlusIcon, TrashIcon, SpinnerGapIcon } from "@phosphor-icons/react";
+import type { CanvasResponse } from "@polotno/types";
 
 export default function DashboardView() {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function DashboardView() {
 
   const fetchCanvases = async () => {
     try {
-      const res = await api.get<CanvasResponse[]>('/canvases');
+      const res = await api.get<CanvasResponse[]>("/canvases");
       setCanvases(res.data || []);
     } catch {
       // silently fail
@@ -36,7 +36,7 @@ export default function DashboardView() {
   const handleCreate = async () => {
     setCreating(true);
     try {
-      const res = await api.post<CanvasResponse>('/canvases', {
+      const res = await api.post<CanvasResponse>("/canvases", {
         name: `Untitled Canvas`,
       });
       if (res.data?.id) {
@@ -59,12 +59,16 @@ export default function DashboardView() {
 
   const handleLogout = async () => {
     await logout();
-    router.push('/login');
+    router.push("/login");
   };
 
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr);
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   if (authLoading || !user) {
@@ -80,8 +84,10 @@ export default function DashboardView() {
       {/* Header */}
       <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-blue-600 rounded-sm" />
-          <span className="font-bold text-gray-900 tracking-tight">Polotno</span>
+          <Logo className="w-6 h-6 rounded-md scale-75" />
+          <span className="font-bold text-gray-900 tracking-tight">
+            Polotno
+          </span>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-sm text-gray-500">{user.name}</span>
@@ -104,7 +110,7 @@ export default function DashboardView() {
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white text-sm font-medium rounded-lg transition-colors shadow-sm"
           >
             <PlusIcon size={16} weight="bold" />
-            {creating ? 'Creating...' : 'New Canvas'}
+            {creating ? "Creating..." : "New Canvas"}
           </button>
         </div>
 
@@ -117,14 +123,18 @@ export default function DashboardView() {
             <div className="w-16 h-16 bg-gray-100 rounded-xl mx-auto mb-4 flex items-center justify-center">
               <PlusIcon size={28} className="text-gray-400" />
             </div>
-            <h2 className="text-lg font-medium text-gray-900 mb-1">No canvases yet</h2>
-            <p className="text-sm text-gray-500 mb-6">Create your first canvas to get started.</p>
+            <h2 className="text-lg font-medium text-gray-900 mb-1">
+              No canvases yet
+            </h2>
+            <p className="text-sm text-gray-500 mb-6">
+              Create your first canvas to get started.
+            </p>
             <button
               onClick={handleCreate}
               disabled={creating}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm"
             >
-              {creating ? 'Creating...' : 'Create Canvas'}
+              {creating ? "Creating..." : "Create Canvas"}
             </button>
           </div>
         ) : (
@@ -145,8 +155,12 @@ export default function DashboardView() {
                 {/* Info */}
                 <div className="px-4 py-3 flex items-center justify-between">
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">{canvas.name}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">{formatDate(canvas.updatedAt)}</p>
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {canvas.name}
+                    </p>
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      {formatDate(canvas.updatedAt)}
+                    </p>
                   </div>
                   <button
                     onClick={(e) => handleDelete(e, canvas.id)}
