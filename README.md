@@ -4,11 +4,19 @@ Polotno is a web-based design tool. Users can create, edit, and export visual de
 
 ## Features
 
-- Add and edit shapes (rectangles, circles, lines) and text.
-- Upload and place images.
-- Select, move, and resize elements.
-- Save and load projects from a dashboard.
-- Export the canvas as a PNG image.
+### User Accounts and Dashboard
+- **Authentication**: Users can create accounts and log in securely.
+- **Dashboard**: Users can view, create, and delete their projects.
+- **Thumbnails**: Projects display an automatic image preview of the canvas.
+
+### Canvas Editor
+- **Shapes and Text**: Add rectangles, circles, lines, arrows, and text.
+- **Image Uploads**: Upload images directly to the canvas via Cloudinary.
+- **Transformations**: Drag, resize, and rotate elements on the board.
+- **Properties Panel**: Change colors, sizes, positions, borders, and text content using a sidebar.
+- **Keyboard Controls**: Move items precisely with arrow keys and remove them with the Delete key.
+- **History**: Undo and redo past actions.
+- **Export**: Download the final design to your computer as a PNG file.
 
 ## Repository Structure
 
