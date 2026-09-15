@@ -7,8 +7,11 @@ import { authRoutes } from './modules/auth/auth.routes.ts';
 import { canvasRoutes } from './modules/canvas/canvas.routes.ts';
 import { uploadRoutes } from './modules/upload/upload.routes.ts';
 import { errorHandler } from './middleware/error-handler.ts';
+import { connectDB } from './config/db.ts';
 
 const app = express();
+
+connectDB();
 
 app.use(cors({ origin: env.CORS_ORIGIN, credentials: true }));
 app.use(express.json({ limit: '10mb' }));
