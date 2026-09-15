@@ -80,8 +80,8 @@ export function CanvasToolbar() {
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
-      const res = await api.post<{ url: string }>('/upload', formData);
+      formData.append('image', file);
+      const res = await api.post<{ url: string }>('/upload/image', formData);
 
       if (res.data?.url) {
         addElement({

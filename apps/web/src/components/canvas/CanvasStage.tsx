@@ -42,6 +42,39 @@ export default function CanvasStage() {
     }
   }, [selectedId, elements]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger if user is typing in an input or textarea
+      if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) return;
+
+      const state = useCanvasStore.getState();
+      if (!state.selectedId) return;
+
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        state.deleteElement(state.selectedId);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const el = state.elements.find(el => el.id === state.selectedId);
+        if (el) state.updateElement(state.selectedId, { y: el.y - 1 });
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const el = state.elements.find(el => el.id === state.selectedId);
+        if (el) state.updateElement(state.selectedId, { y: el.y + 1 });
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const el = state.elements.find(el => el.id === state.selectedId);
+        if (el) state.updateElement(state.selectedId, { x: el.x - 1 });
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        const el = state.elements.find(el => el.id === state.selectedId);
+        if (el) state.updateElement(state.selectedId, { x: el.x + 1 });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const checkDeselect = (e: Konva.KonvaEventObject<MouseEvent | TouchEvent>) => {
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
@@ -67,6 +100,8 @@ export default function CanvasStage() {
             width: el.width,
             height: el.height,
             rotation: el.rotation,
+            scaleX: 1,
+            scaleY: 1,
             draggable: true,
             onClick: () => selectElement(el.id),
             onTap: () => selectElement(el.id),
@@ -82,13 +117,24 @@ export default function CanvasStage() {
               const scaleY = node.scaleY();
               node.scaleX(1);
               node.scaleY(1);
-              updateElement(el.id, {
-                x: node.x(),
-                y: node.y(),
-                rotation: node.rotation(),
-                width: Math.max(5, node.width() * scaleX),
-                height: Math.max(5, node.height() * scaleY),
-              });
+              
+              if (el.type === 'line' && el.points) {
+                const newPoints = el.points.map((p, i) => i % 2 === 0 ? p * scaleX : p * scaleY);
+                updateElement(el.id, {
+                  x: node.x(),
+                  y: node.y(),
+                  rotation: node.rotation(),
+                  points: newPoints,
+                });
+              } else {
+                updateElement(el.id, {
+                  x: node.x(),
+                  y: node.y(),
+                  rotation: node.rotation(),
+                  width: Math.max(5, node.width() * scaleX),
+                  height: Math.max(5, node.height() * scaleY),
+                });
+              }
             },
           };
 
@@ -142,6 +188,7 @@ export default function CanvasStage() {
               strokeWidth: el.strokeWidth || 2,
               lineCap: 'round' as const,
               lineJoin: 'round' as const,
+              hitStrokeWidth: 20,
             };
             return el.pointerAtEnd ? (
               <Arrow key={el.id} {...lineProps} pointerLength={10} pointerWidth={10} />

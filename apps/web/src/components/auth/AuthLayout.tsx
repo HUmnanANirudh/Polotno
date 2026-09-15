@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CloudShader } from '../landing/Cloud';
+import { Logo } from '../ui/Logo';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -24,9 +25,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         {/* Brand content */}
         <div className="relative z-10 flex flex-col justify-center px-16">
           <Link href="/" className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <div className="w-5 h-5 bg-blue-600 rounded-sm" />
-            </div>
+            <Logo />
             <span className="text-2xl font-bold text-white tracking-tight">Polotno</span>
           </Link>
           <h1 className="text-4xl font-bold text-white leading-tight mb-4">
@@ -45,9 +44,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           {/* Mobile-only branding */}
           <div className="lg:hidden flex justify-center mb-8">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <div className="w-4 h-4 bg-white rounded-sm" />
-              </div>
+              <Logo className="w-8 h-8 rounded-md scale-75" />
               <span className="text-xl font-bold text-gray-900 tracking-tight">Polotno</span>
             </Link>
           </div>

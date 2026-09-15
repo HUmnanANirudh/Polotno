@@ -57,9 +57,10 @@ export function CanvasProperties() {
             <span className="text-sm font-semibold text-gray-700 capitalize">{selectedElement.type}</span>
             <button 
               onClick={() => deleteElement(selectedElement.id)}
-              className="text-red-500 text-xs font-medium hover:underline"
+              className="text-red-500 text-xs font-medium hover:underline flex items-center gap-1.5"
             >
-              Delete
+              Delete 
+              <kbd className="hidden sm:inline-flex items-center gap-1 rounded border border-gray-200 bg-gray-50 px-1.5 font-mono text-[10px] font-medium text-gray-500">Del</kbd>
             </button>
           </div>
 
@@ -140,8 +141,18 @@ export function CanvasProperties() {
           
         </div>
       ) : (
-        <div className="text-sm text-gray-400 text-center mt-8">
-          Select an element to view and edit its properties.
+        <div className="text-sm text-gray-400 text-center mt-8 space-y-4">
+          <p>Select an element to view and edit its properties.</p>
+          <div className="flex flex-col items-center gap-2 pt-4 border-t border-gray-100">
+             <div className="flex items-center gap-2">
+               <kbd className="inline-flex items-center rounded border border-gray-200 bg-gray-50 px-1.5 font-mono text-[10px] font-medium text-gray-500">↑↓←→</kbd>
+               <span className="text-xs">to move</span>
+             </div>
+             <div className="flex items-center gap-2">
+               <kbd className="inline-flex items-center rounded border border-gray-200 bg-gray-50 px-1.5 font-mono text-[10px] font-medium text-gray-500">Del</kbd>
+               <span className="text-xs">to delete</span>
+             </div>
+          </div>
         </div>
       )}
     </div>
