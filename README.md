@@ -2,6 +2,8 @@
 
 Polotno is a web-based design tool. Users can create, edit, and export visual designs using an interactive canvas.
 
+<img width="1884" height="890" alt="image" src="https://github.com/user-attachments/assets/a8cf8435-f955-4e95-badd-43e811f01573" />
+
 ## Features
 
 ### User Accounts and Dashboard
