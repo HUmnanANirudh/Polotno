@@ -27,9 +27,24 @@ Polotno is a web-based design tool. Users can create, edit, and export visual de
 
 This project uses a monorepo structure managed by Bun. We split the code into three parts:
 
-- `apps/web`: The frontend application. We build it with Next.js, React, Tailwind CSS, Zustand, and React-Konva.
-- `apps/api`: The backend API. We build it with Express, Prisma, and MongoDB.
-- `packages/types`: Shared TypeScript definitions and Zod schemas. Both the frontend and backend use this package to validate data.
+### 1. Frontend (`apps/web`)
+We build the user interface with these tools:
+- **Next.js & React**: The core framework for the website.
+- **Zustand**: Manages the application state.
+- **React-Konva**: Powers the interactive 2D canvas.
+- **Tailwind CSS**: Styles the user interface.
+- **Phosphor Icons**: Provides clean, scalable SVG icons for the interface.
+- **React-Hot-Toast**: Shows success and error messages to the user.
+
+### 2. Backend (`apps/api`)
+We build the server with these tools:
+- **Express**: Runs the web server.
+- **Prisma**: The Object-Relational Mapper (ORM) that interacts with the database.
+- **MongoDB**: The main database that stores users and projects.
+- **Cloudinary**: Stores uploaded image files.
+
+### 3. Packages (`packages/types`)
+- **Zod**: Defines exact schemas to validate data on both the frontend and backend.
 
 ## Setup Instructions
 
@@ -92,6 +107,15 @@ This command starts both the frontend and backend at the same time. Open `http:/
 
 ## Known Limitations
 
+### General
 - **No Multiplayer**: The application does not support real-time collaboration. Only one person can edit a canvas at a time.
 - **Image Storage**: Deleting an image from the canvas removes it from the screen, but it does not delete the file from your Cloudinary storage.
 - **Vector Export**: Users cannot export the canvas in vector formats like SVG. The app only exports raster PNG files.
+
+### Canvas vs. Excalidraw
+Compared to tools like Excalidraw, this canvas engine lacks several features:
+- **Hit Detection**: We use rectangular bounding boxes to select elements. If you click the empty space near a diagonal line, it still selects the line. Excalidraw selects lines based on the exact stroke.
+- **Art Style**: We draw perfect, rigid shapes. We do not support the hand-drawn, sketchy look of Excalidraw.
+- **Canvas Size**: The canvas has a fixed width and height. It does not provide an infinite drawing board.
+- **Freehand Drawing**: Users cannot draw freehand lines with a pencil tool.
+- **Smart Connections**: Arrows do not automatically snap or lock onto shapes when you move them.
